@@ -1,38 +1,19 @@
-# create-svelte
+# Bug reproduction repo
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This repo is a reproduction repo for Auth.js issue:
+https://github.com/nextauthjs/next-auth/issues/6174
 
-## Creating a project
+Run the app with `npm run dev`, when clicked through `<a>` tags on the main page the router redirects just fine.
+But if you type the URL manually in the browser address bar it will end up in infinite redirect.
+This is exactly how Auth.js redirect to this page
 
-If you're seeing this, you've probably already done this step. Congrats!
+Type in `http://localhost:5174/auth/error` in address bar. You should get a `ERR_TOO_MANY_REDIRECTS`
+This also applies to `http://localhost:5174/auth/signin` and `http://localhost:5174/auth/signout`.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+However, if you go to `hooks.server.ts` and uncomment the set of urls that are slightly changed, and not exactly the same as the defaults Auth.js provides it will work just fine. Then try
 
-# create a new project in my-app
-npm create svelte@latest my-app
 ```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+http://localhost:5174/auth/x/error
+http://localhost:5174/auth/x/signin
+http://localhost:5174/auth/x/signout
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
